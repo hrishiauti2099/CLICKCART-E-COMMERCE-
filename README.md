@@ -23,5 +23,4 @@ To access the H2 console:
 Start the application
 Open: http://localhost:8080/h2-console
 user:sa
-password:
 Use the default JDBC URL provided in application.properties.
