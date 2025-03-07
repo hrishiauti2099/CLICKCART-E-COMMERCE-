@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-commerce Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for header adjustments */
+        .navbar-brand { font-weight: bold; font-size: 1.5em; }
+        .navbar-nav .nav-item .nav-link { font-size: 1.1em; }
+        .search-input { width: 700px; }
+
+        /* Carousel adjustments */
+        .carousel-img {
+            max-height: 50vh; /* Carousel height set to 1/4th of the page */
+            object-fit: cover;
+        }
+       /* featured Categories Section */
+       .categories-heading {
+    font-size: 1.5rem; /* Increase size */
+    font-weight: bold; /* Make bold */
+    letter-spacing: 1px; /* Optional: Improve readability */
+}
+
+.category-icon {
+    width: 70px;  /* Smaller icon size */
+    height: 70px;
+    object-fit: contain; /* Prevent distortion */
+    border-radius: 10px; /* Rounded corners */
+    transition: transform 0.3s ease-in-out;
+}
+
+.category-icon:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.category-link {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.category-link h5, .category-link p {
+    margin-top: 8px;
+    font-size: 1em; /* Adjusted for consistency */
+}
+
+.category-link:hover h5, .category-link:hover p {
+    color: #007bff; /* Highlight text on hover */
+}
+        .search-input {
+    width: 100%; /* Expands to available space */
+    max-width: 500px; /* Limits max width */
+    padding: 10px; /* Adds padding for better appearance */
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #0056b3; /* Darker blue border on focus */
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    outline: none; /* Removes default focus outline */
+}
+        /* Dropdown Styling */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 8px 0;
+        min-width: 150px;
+        text-align: center;
+        z-index: 10;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 8px 12px;
+        color: black;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+        background: lightgray;
+    }
+
+    /* Show dropdown on hover */
+    .category-link:hover .dropdown-menu {
+        display: block;
+    }
+
+
+
+    </style>
+</head>
+<body>
+<!-- Header & Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <!-- Website Name -->
+    <a class="navbar-brand font-weight-bold" th:href="@{/}" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">
+        Click<span style="color: #007bff;">Cart</span>
+    </a>
+
+    <!-- Toggle Button for Mobile -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <!-- Search Bar - Occupies remaining space -->
+
+        <form class="form-inline mx-auto w-50 d-flex" action="/search" method="GET">
+            <input class="form-control flex-grow-1 search-input" type="text" name="query" placeholder="Search for products..."
+                   aria-label="Search" style="height: 40px; font-size: 1rem;">
+            <button class="btn btn-outline-success ml-2" type="submit">Search</button>
+        </form>
+
+        <!-- User Profile & Cart -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link font-weight-bold" th:href="@{/account}" style="font-size: 1.3rem;">
+                    <i class="fas fa-user"></i> Account
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link font-weight-bold" th:href="@{/cart}" style="font-size: 1.3rem;">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span id="cart-count" class="badge badge-pill badge-danger">0</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<!-- Separator Strip -->
+<div style="height: 4px; background-color: #4B0082; margin-bottom: 15px;"></div> <!-- Indigo Purple -->
+
+<!-- Categories Section (Below Navbar) -->
+<section class="container mt-3">
+    <h4 class="categories-heading text-center mb-3">Categories</h4>
+    <div class="d-flex flex-wrap justify-content-center">
+
+        <!-- Electronics -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/asus-tuf-gaming-f15-laptop-review_163073701910.jpg" class="category-icon" alt="Electronics">
+            <p>Electronics</p>
+            <div class="dropdown-menu">
+                <a href="/mobile-phones">Mobile Phones</a>
+                <a href="/laptops">Laptops</a>
+                <a href="/Accessories">Accessories</a>
+            </div>
+        </div>
+
+        <!-- Clothing -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/clothes-on-a-rack-in-a-clothing-store.jpg" class="category-icon" alt="Clothing">
+            <p>Clothing</p>
+            <div class="dropdown-menu">
+                <a href="/men">Men's Clothing</a>
+                <a href="/women">Women</a>
+                <a href="/Kids">Kids</a>
+            </div>
+        </div>
+
+        <!-- Shoes -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/shoes_mkk.jpg" class="category-icon" alt="Shoes">
+            <p>Shoes</p>
+            <div class="dropdown-menu">
+                <a href="/Sneakers">Sneakers</a>
+                <a href="/Formal_Shoes">Formal Shoes</a>
+                <a href="/Sports_Shoes">Sports Shoes</a>
+            </div>
+        </div>
+
+        <!-- Grocery -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/grocery-fdffd.jpg" class="category-icon" alt="Grocery">
+            <p>Grocery</p>
+            <div class="dropdown-menu">
+                <a href="/Fruits_Vegetables">Fruits & Vegetables</a>
+                <a href="/Dairy_Bakery">Dairy & Bakery</a>
+                <a href="/Snacks_Beverages">Snacks & Beverages</a>
+            </div>
+        </div>
+
+        <!-- Beauty -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/beauty-products.jpg" class="category-icon" alt="Beauty">
+            <p>Beauty</p>
+            <div class="dropdown-menu">
+                <a href="/Skincare">Skincare</a>
+                <a href="/Makeup">Makeup</a>
+                <a href="/Hair_Care">Hair Care</a>
+            </div>
+        </div>
+
+        <!-- Home & Kitchen -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/homeAndKitchen.jpg" class="category-icon" alt="Home & Kitchen">
+            <p>Home & Kitchen</p>
+            <div class="dropdown-menu">
+                <a href="/Furniture">Furniture</a>
+                <a href="/Cookware">Cookware</a>
+                <a href="/Home_Decor">Home Decor</a>
+            </div>
+        </div>
+
+        <!-- Health & Fitness -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/fitness-fcsc.jpg" class="category-icon" alt="Health & Fitness">
+            <p>Health & Fitness</p>
+            <div class="dropdown-menu">
+                <a href="/Supplements">Supplements</a>
+                <a href="/Fitness_Equipment">Fitness Equipment</a>
+                <a href="/Activewear">Activewear</a>
+            </div>
+        </div>
+
+        <!-- Books -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/books-ffd.jpg" class="category-icon" alt="Books">
+            <p>Books</p>
+            <div class="dropdown-menu">
+                <a href="/Fiction">Fiction</a>
+                <a href="/Non_Fiction">Non-Fiction</a>
+                <a href="/Educational">Office Supplies</a>
+            </div>
+        </div>
+
+        <!-- Toys -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/toys-df.jpg" class="category-icon" alt="Toys">
+            <p>Toys</p>
+            <div class="dropdown-menu">
+                <a href="/Educational_Toys">Educational Toys</a>
+                <a href="/Baby_Essentials">Baby Essentials</a>
+                <a href="/Kids_Apparel">Kids' Apparel</a>
+            </div>
+        </div>
+
+        <!-- Automobile -->
+        <div class="category-link mx-2 text-center position-relative">
+            <img src="/autiombileTools.jpg" class="category-icon" alt="Automobile">
+            <p>Automobile</p>
+            <div class="dropdown-menu">
+                <a href="/Car_Accessories">Car Accessories</a>
+                <a href="/Bike_Accessories">Bike Accessories</a>
+                <a href="/Tools_Gadgets">Tools & Gadgets</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Separator Strip -->
+<div style="height: 4px; background-color: #4B0082; margin-bottom: 15px;"></div> <!-- Indigo Purple -->
+
+
+
+<!-- Offers for You Title -->
+<h4 class="text-center font-weight-bold mt-4 mb-3">Offers for You</h4>
+
+<!-- Carousel Section / Moving Banners -->
+<div id="homeCarousel" class="carousel slide" data-ride="carousel" style="max-height: 60vh; overflow: hidden;">
+    <div class="carousel-inner">
+
+        <!-- Slide 1: Electronics, Clothing, Shoes -->
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Electronics -->
+                    <div class="col-md-4 text-center">
+                        <img src="/asus-rog-pictures-spe4b734b458ngcl.webp" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="Electronics">
+                        <h4>Latest Electronics & Gadgets</h4>
+                        <p>Upgrade your life with the newest tech.</p>
+                        <a href="/categories/electronics" class="btn btn-primary">Shop Now</a>
+                    </div>
+                    <!-- Clothing -->
+                    <div class="col-md-4 text-center">
+                        <img src="/multicolored-leather-clothes-c8g3fmvxrkvq3.webp" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="Clothing">
+                        <h4>Fashion Trends You Can't Miss</h4>
+                        <p>Discover the latest styles and looks.</p>
+                        <a href="/categories/clothing" class="btn btn-warning">Shop Now</a>
+                    </div>
+                    <!-- Shoes -->
+                    <div class="col-md-4 text-center">
+                        <img src="/shoes_mkk.jpg" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="Shoes">
+                        <h4>Step Into Comfort & Style</h4>
+                        <p>Find the perfect pair for every occasion.</p>
+                        <a href="/categories/shoes" class="btn btn-success">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Fitness, Mobile, TV -->
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Fitness -->
+                    <div class="col-md-4 text-center">
+                        <img src="/variety-protein-supplements-containers-.png" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="Fitness">
+                        <h4>Top quality supplements</h4>
+                        <p>Better absorption and muscle recovery</p>
+                        <a href="/categories/fitness" class="btn btn-info">Shop Now</a>
+                    </div>
+                    <!-- Mobile -->
+                    <div class="col-md-4 text-center">
+                        <img src="/samsungSseriesD3-Exclusive-Configurator-DT-800.jpg" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="Mobile">
+                        <h4>Latest Mobile Phones</h4>
+                        <p>Experience cutting-edge mobile technology.</p>
+                        <a href="/categories/mobile" class="btn btn-primary">Shop Now</a>
+                    </div>
+                    <!-- TV -->
+                    <div class="col-md-4 text-center">
+                        <img src="/TVvideoconjsdd.webp" class="img-fluid rounded"
+                             style="height: 250px; object-fit: cover; width: 100%;" alt="TV">
+                        <h4>High-Definition TVs</h4>
+                        <p>Enjoy immersive viewing experiences.</p>
+                        <a href="/categories/tv" class="btn btn-danger">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+    <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<!-- Spacer -->
+<div class="mt-5"></div>
+
+<footer class="bg-dark text-white pt-4">
+    <div class="container">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-4 mb-3">
+                <h5 class="font-weight-bold">About ClickCart</h5>
+                <p>
+                    ClickCart is your one-stop shop for the latest products across various categories. We offer quality products, unbeatable deals, and exceptional customer service.
+                </p>
+            </div>
+            <!-- Quick Links Section -->
+            <div class="col-md-4 mb-3">
+                <h5 class="font-weight-bold">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/home" class="text-white">Home</a></li>
+                    <li><a href="/categories" class="text-white">Categories</a></li>
+                    <li><a href="/account" class="text-white">Account</a></li>
+                    <li><a href="/contact" class="text-white">Contact Us</a></li>
+                </ul>
+            </div>
+            <!-- Contact Section -->
+            <div class="col-md-4 mb-3">
+                <h5 class="font-weight-bold">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-phone-alt"></i> +91 9763776499</li>
+                    <li><i class="fas fa-envelope"></i> support@clickcart.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Phase 1 Hinjwadi,Pune,Maharashtra,India</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Footer Bottom -->
+        <div class="text-center py-3 border-top border-secondary">
+            <small>© 2025 ClickCart. All Rights Reserved.</small>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<!-- Include Bootstrap and jQuery scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Ensure the openDropdown variable is passed correctly from Thymeleaf
+    const openDropdownCategory = /*[[${openDropdown}]]*/; // Make sure this is correctly rendered by Thymeleaf
+
+    if (openDropdownCategory) {
+        // Assuming category names are properly formatted in your HTML IDs (e.g., category-dropdown-mobile-phones)
+        const dropdown = document.getElementById("category-dropdown-" + openDropdownCategory.toLowerCase().replace(" ", "-"));
+        if (dropdown) {
+            // Open the dropdown if it's found
+            dropdown.querySelector(".dropdown-content").style.display = 'block';
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount(); // Ensure the cart count is updated on page load
+});
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        document.getElementById("cart-count").textContent = cart.length;
+    }
+
+
+</script>
+
+</body>
+</html>

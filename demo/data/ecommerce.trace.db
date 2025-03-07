@@ -1,0 +1,6 @@
+2025-02-14 02:01:01.996179+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCTS" not found (this database is empty); SQL statement:
+select p1_0.id,p1_0.category,p1_0.description,p1_0.image_url,p1_0.name,p1_0.price,p1_0.stock_quantity,p1_0.subcategory from products p1_0 [42104-232]
+2025-02-14 10:11:59.911378+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCTS" not found (this database is empty); SQL statement:
+select p1_0.id,p1_0.category,p1_0.description,p1_0.image_url,p1_0.name,p1_0.price,p1_0.stock_quantity,p1_0.subcategory from products p1_0 [42104-232]
