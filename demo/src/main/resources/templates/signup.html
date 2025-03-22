@@ -9,7 +9,8 @@
 <body>
 <div class="container mt-5">
   <h2 class="text-center">Create Your ClickCart Account</h2>
-  <form action="/signup" method="post">
+  <form method="post" action="/signup">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="mb-3">
       <label>Username</label>
       <input type="text" name="username" class="form-control" required>
@@ -21,6 +22,7 @@
     <button class="btn btn-primary">Signup</button>
   </form>
   <a href="/login" class="btn btn-link">Already Have an Account? Login</a>
+
 </div>
 </body>
 </html>

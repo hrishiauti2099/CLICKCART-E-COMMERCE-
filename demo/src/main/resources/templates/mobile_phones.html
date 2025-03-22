@@ -62,6 +62,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
     <a class="navbar-brand font-weight-bold" href="/" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">
         Click<span style="color: #007bff;">Cart</span>
+        <p id="cart-message"></p>
     </a>
 
     <div class="collapse navbar-collapse" id="navbarContent">
@@ -103,96 +104,36 @@
 
 
 <script>
-    // Fetch products from backend
-    function fetchProducts() {
-        fetch('/api/products?category=Smartphones')  // Fetch only mobile phones
-            .then(response => response.json())
-            .then(products => renderProducts(products))
-            .catch(error => console.error('Error fetching products:', error));
-    }
-    fetchProducts();
-
-    // Render products dynamically
-    function renderProducts(products) {
-        const container = document.getElementById("product-container");
-        container.innerHTML = "";
-
-        products.forEach((product, index) => {
-            const productCard = `
-                <div class="product-card" id="product-${index}">
-                    <img src="${product.imageUrl}" alt="${product.name}">
-                    <p><strong>${product.name}</strong></p>
-                    <p>${product.description}</p>
-                    <p><strong>Price:</strong> ₹${product.price.toLocaleString()}</p>
-                    <p><strong>Stock:</strong> <span class="stock">${product.stockQuantity}</span></p>
-                    <button class="button buy-button" onclick="buyProduct(${index})">Buy Now</button>
-                    <button class="button cart-button" onclick="addToCart(${index})">Add to Cart</button>
-                </div>
-            `;
-            container.innerHTML += productCard;
-        });
-
-        updateCartCount();
-        scrollToProduct(); // Scroll to the product if there's a hash
-    }
-
-    // Scroll to the product if there's a hash in the URL
-    function scrollToProduct() {
-        const hash = window.location.hash;
-        if (hash) {
-            const productElement = document.querySelector(hash);
-            if (productElement) {
-                productElement.scrollIntoView({behavior: 'smooth', block: 'center'});
-            }
-        }
-    }
-
-    // Buy product - Decrease stock and update UI
-    function buyProduct(index) {
-        const product = products[index];
-        if (product.stockQuantity > 0) {
-            product.stockQuantity--;
-            alert(`${product.name} purchased successfully!`);
-            renderProducts(products); // Re-render products with updated stock
-        } else {
-            alert("Out of stock!");
-        }
-    }
-
-   // Add product to cart and update localStorage
-function addToCart(index) {
-    fetch('/api/products')  // Ensure fetching updated products list
-        .then(response => response.json())
-        .then(products => {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const selectedProduct = products[index]; // Fetch product based on index
-
-            if (selectedProduct) {
-                cart.push(selectedProduct);
-                localStorage.setItem("cart", JSON.stringify(cart));
-                alert(`${selectedProduct.name} added to cart!`);
-                updateCartCount();
-            } else {
-                alert("Error adding product to cart!");
-            }
-        })
-        .catch(error => console.error("Error fetching products:", error));
-}
-
-
-   document.addEventListener("DOMContentLoaded", function() {
-    updateCartCount(); // Ensure the cart count is updated on page load
-});
-
-// Update the cart count on the page
-function updateCartCount() {
+    function updateCartCount() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     document.getElementById("cart-count").textContent = cart.length;
+
+    if (cart.length > 0) {
+        document.getElementById("cart-message").textContent = "Product added to the cart!";
+    } else {
+        document.getElementById("cart-message").textContent = "";
+    }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
+});
 
-    // Initial render by fetching data from the backend
-    fetchProducts();
+// Call this function when a product is added to the cart
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+// Call this function when a product is bought
+function buyProduct() {
+    localStorage.removeItem("cart");
+    updateCartCount();
+    alert("Your product will be delivered to your address within 3 days.");
+}
+
 </script>
 
 </body>

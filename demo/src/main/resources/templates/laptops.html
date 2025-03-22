@@ -54,6 +54,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
     <a class="navbar-brand font-weight-bold" href="/" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">
         Click<span style="color: #007bff;">Cart</span>
+        <p id="cart-message"></p>
     </a>
 
     <div class="collapse navbar-collapse" id="navbarContent">
@@ -95,72 +96,36 @@
 </div>
 
 <script>
-    let productsList = []; // Store globally to avoid repeated fetches
-
-    function fetchProducts() {
-        fetch('/api/products?category=Laptops')
-            .then(response => response.json())
-            .then(products => {
-                productsList = products;
-                renderProducts(products);
-            })
-            .catch(error => console.error('Error fetching products:', error));
-    }
-
-    function renderProducts(products) {
-        const container = document.getElementById("product-container");
-        container.innerHTML = "";
-
-        products.forEach((product, index) => {
-            const isOutOfStock = product.stockQuantity <= 0;
-            const productCard = `
-                <div class="product-card" id="product-${index}">
-                    <img src="${product.imageUrl}" alt="${product.name}">
-                    <p><strong>${product.name}</strong></p>
-                    <p>${product.description}</p>
-                    <p><strong>Price:</strong> ₹${product.price.toLocaleString()}</p>
-                    <p><strong>Stock:</strong> <span class="stock">${product.stockQuantity}</span></p>
-                    <button class="button buy-button" onclick="buyProduct(${index})" ${isOutOfStock ? "disabled" : ""}>
-                        Buy Now
-                    </button>
-                    <button class="button cart-button" onclick="addToCart(${index})" ${isOutOfStock ? "disabled" : ""}>
-                        Add to Cart
-                    </button>
-                </div>
-            `;
-            container.innerHTML += productCard;
-        });
-
-        updateCartCount();
-    }
-
-    function addToCart(index) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const selectedProduct = productsList[index];
-
-        if (!selectedProduct) {
-            alert("Error adding product to cart!");
-            return;
-        }
-
-        cart.push(selectedProduct);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`${selectedProduct.name} added to cart!`);
-        updateCartCount();
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-    updateCartCount(); // Ensure the cart count is updated on page load
-});
-
-// Update the cart count on the page
-function updateCartCount() {
+    function updateCartCount() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     document.getElementById("cart-count").textContent = cart.length;
+
+    if (cart.length > 0) {
+        document.getElementById("cart-message").textContent = "Product added to the cart!";
+    } else {
+        document.getElementById("cart-message").textContent = "";
+    }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
+});
 
-    fetchProducts();
+// Call this function when a product is added to the cart
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+// Call this function when a product is bought
+function buyProduct() {
+    localStorage.removeItem("cart");
+    updateCartCount();
+    alert("Your product will be delivered to your address within 3 days.");
+}
+
 </script>
 
 </body>

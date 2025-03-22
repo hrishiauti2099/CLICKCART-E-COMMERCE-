@@ -3,7 +3,12 @@ package com.example.demo.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -12,35 +17,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/h2-console/**", "/static/**").permitAll() // Allowed URLs
+                .csrf(csrf -> csrf.disable())  // Disable CSRF (only for development/testing)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/signup", "/register", "/h2-console/**").permitAll()  // Allow H2 console access
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable()) // CSRF pura delete 🔥
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin()) // Ye line replace ho gayi
-                )
                 .formLogin(login -> login
-                        .loginPage("/login") // Custom Login Page
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
-                        .defaultSuccessUrl("/home", true) // Login ke baad kaha jaayega
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .permitAll());
+                .logout(logout -> logout.permitAll());
 
+        // IMPORTANT: Allow frames for H2 console
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }
 
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withUsername("hrishiauti2099@gmail.com")
+                .password(passwordEncoder().encode("2003"))
+                .roles("USER")
+                .build();
 
-        return new BCryptPasswordEncoder();
-
-
-
+        return new InMemoryUserDetailsManager(user);
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

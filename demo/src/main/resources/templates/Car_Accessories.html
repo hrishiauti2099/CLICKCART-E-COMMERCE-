@@ -52,6 +52,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
     <a class="navbar-brand font-weight-bold" href="/" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">
         Click<span style="color: #007bff;">Cart</span>
+        <p id="cart-message"></p>
     </a>
     <div class="collapse navbar-collapse" id="navbarContent">
         <form class="form-inline mx-auto w-50 d-flex" action="/search" method="GET">
@@ -90,13 +91,35 @@
 
 <script>
     function updateCartCount() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        document.getElementById("cart-count").textContent = cart.length;
-    }
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    document.getElementById("cart-count").textContent = cart.length;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        updateCartCount();
-    });
+    if (cart.length > 0) {
+        document.getElementById("cart-message").textContent = "Product added to the cart!";
+    } else {
+        document.getElementById("cart-message").textContent = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
+});
+
+// Call this function when a product is added to the cart
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+// Call this function when a product is bought
+function buyProduct() {
+    localStorage.removeItem("cart");
+    updateCartCount();
+    alert("Your product will be delivered to your address within 3 days.");
+}
+
 </script>
 
 </body>

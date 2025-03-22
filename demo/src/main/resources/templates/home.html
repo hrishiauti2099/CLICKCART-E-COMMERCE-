@@ -107,6 +107,7 @@
     <!-- Website Name -->
     <a class="navbar-brand font-weight-bold" th:href="@{/}" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">
         Click<span style="color: #007bff;">Cart</span>
+
     </a>
 
     <!-- Toggle Button for Mobile -->
@@ -286,7 +287,7 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="Electronics">
                         <h4>Latest Electronics & Gadgets</h4>
                         <p>Upgrade your life with the newest tech.</p>
-                        <a href="/categories/electronics" class="btn btn-primary">Shop Now</a>
+                        <a href="#" class="btn btn-primary" onclick="showAlert(event)">Shop Now</a>
                     </div>
                     <!-- Clothing -->
                     <div class="col-md-4 text-center">
@@ -294,7 +295,7 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="Clothing">
                         <h4>Fashion Trends You Can't Miss</h4>
                         <p>Discover the latest styles and looks.</p>
-                        <a href="/categories/clothing" class="btn btn-warning">Shop Now</a>
+                        <a href="#" class="btn btn-warning" onclick="showAlert(event)">Shop Now</a>
                     </div>
                     <!-- Shoes -->
                     <div class="col-md-4 text-center">
@@ -302,7 +303,7 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="Shoes">
                         <h4>Step Into Comfort & Style</h4>
                         <p>Find the perfect pair for every occasion.</p>
-                        <a href="/categories/shoes" class="btn btn-success">Shop Now</a>
+                        <a href="#" class="btn btn-success" onclick="showAlert(event)">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -318,7 +319,7 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="Fitness">
                         <h4>Top quality supplements</h4>
                         <p>Better absorption and muscle recovery</p>
-                        <a href="/categories/fitness" class="btn btn-info">Shop Now</a>
+                        <a href="#" class="btn btn-info" onclick="showAlert(event)">Shop Now</a>
                     </div>
                     <!-- Mobile -->
                     <div class="col-md-4 text-center">
@@ -326,7 +327,7 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="Mobile">
                         <h4>Latest Mobile Phones</h4>
                         <p>Experience cutting-edge mobile technology.</p>
-                        <a href="/categories/mobile" class="btn btn-primary">Shop Now</a>
+                        <a href="#" class="btn btn-primary" onclick="showAlert(event)">Shop Now</a>
                     </div>
                     <!-- TV -->
                     <div class="col-md-4 text-center">
@@ -334,13 +335,22 @@
                              style="height: 250px; object-fit: cover; width: 100%;" alt="TV">
                         <h4>High-Definition TVs</h4>
                         <p>Enjoy immersive viewing experiences.</p>
-                        <a href="/categories/tv" class="btn btn-danger">Shop Now</a>
+                        <a href="#" class="btn btn-danger" onclick="showAlert(event)">Shop Now</a>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
+</div>
+
+<!-- JavaScript Alert Function -->
+<script>
+    function showAlert(event) {
+        event.preventDefault();  // Prevents redirection
+        alert('Item will be delivered within 3 days at your address');
+    }
+</script>
 
     <!-- Controls -->
     <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev">
@@ -412,14 +422,36 @@
             dropdown.querySelector(".dropdown-content").style.display = 'block';
         }
     }
-    document.addEventListener("DOMContentLoaded", function() {
-    updateCartCount(); // Ensure the cart count is updated on page load
+   function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    document.getElementById("cart-count").textContent = cart.length;
+
+    if (cart.length > 0) {
+        document.getElementById("cart-message").textContent = "Product added to the cart!";
+    } else {
+        document.getElementById("cart-message").textContent = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
 });
 
-    function updateCartCount() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        document.getElementById("cart-count").textContent = cart.length;
-    }
+// Call this function when a product is added to the cart
+function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+// Call this function when a product is bought
+function buyProduct() {
+    localStorage.removeItem("cart");
+    updateCartCount();
+    alert("Your product will be delivered to your address within 3 days.");
+}
+
 
 
 </script>
