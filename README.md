@@ -1,1 +1,1 @@
-# CLICKCART-E-COMMERCE- (visit Master branch for the project)
+# CLICKCART-E-COMMERCE- (Please Visit Master branch for the project)
