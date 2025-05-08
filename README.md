@@ -70,3 +70,9 @@ ClickCart/
 └── pom.xml           # Project configuration
 👨‍💻 Made with ❤️ by Hrishikesh
 Java Developer
+
+
+## 📷 Dropdown Preview
+
+![ClickCart Dropdowns](https://raw.githubusercontent.com/hrishiauti2099/Project_Images/main/clickcart%20dropdowns.png)
+
