@@ -1,6 +1,6 @@
 🛒 ClickCart – E-Commerce Application (Java Spring Boot)
 
-🔁 Please visit the master branch for the complete project source code.
+🔁 🚨 PLEASE VISIT THE master BRANCH FOR THE COMPLETE PROJECT SOURCE CODE 🚨
 
 If you’re on the main branch, run the following command to switch:
 
