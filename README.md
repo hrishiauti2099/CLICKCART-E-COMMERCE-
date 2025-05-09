@@ -21,18 +21,12 @@ The project uses the built-in Maven Wrapper (./mvnw)
 🔧 Building the Project
 Use the Maven Wrapper to clean and package the app:
 
-bash
-Copy
-Edit
 ./mvnw clean package
 ✅ Recommended approach for consistency across all environments.
 
 ▶️ Running the Application
 Start the app in just two steps:
 
-bash
-Copy
-Edit
 cd demo     # Replace 'demo' with the actual folder name/path
 ./mvnw spring-boot:run
 🗃️ Database Info – H2 Console
@@ -57,9 +51,7 @@ The H2 Console is great for testing — you can view and modify data in real tim
 Since the database resets, use the UI to add fresh data after restarting the app.
 
 📁 Folder Structure (Basic Overview)
-pgsql
-Copy
-Edit
+
 ClickCart/
 ├── src/
 │   ├── main/
@@ -68,6 +60,8 @@ ClickCart/
 ├── .mvn/             # Maven Wrapper files
 ├── mvnw / mvnw.cmd   # Maven Wrapper executables
 └── pom.xml           # Project configuration
+
+
 👨‍💻 Made with ❤️ by Hrishikesh
 Java Developer
 
